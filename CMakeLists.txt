@@ -7,6 +7,7 @@ project(lsd_alignment)
 find_package(catkin REQUIRED COMPONENTS
   cv_bridge
   image_transport
+  image_geometry
   sensor_msgs
   roscpp
   rospy
@@ -67,7 +68,7 @@ else()
 endif()
 
 ## Declare a C++ executable
-add_executable(lsd_alignment src/main.cpp src/lsd.cpp)
+add_executable(lsd_alignment src/main.cpp src/lsd.cpp src/camera.cpp)
 target_link_libraries(lsd_alignment ${catkin_LIBRARIES} ${GTSAM_LIBRARIES} ${TBB_LIBRARIES} )
 target_link_libraries(lsd_alignment ${Boost_LIBRARIES})
 target_link_libraries(lsd_alignment ${Boost_SYSTEM_LIBRARY})

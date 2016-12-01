@@ -1,10 +1,6 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
 compute_jacob	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    cv::Mat compute_jacob();$/;"	p	language:C++	class:MyLSD
-cx_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^        double cx_, cy_, fx_, fy_;$/;"	m	language:C++	class:MyLSD
-cy_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^        double cx_, cy_, fx_, fy_;$/;"	m	language:C++	class:MyLSD
 delta_R	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    Eigen::Vector3d delta_R(const Matrix_3X3 &R);$/;"	p	language:C++	class:MyLSD
-fx_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^        double cx_, cy_, fx_, fy_;$/;"	m	language:C++	class:MyLSD
-fy_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^        double cx_, cy_, fx_, fy_;$/;"	m	language:C++	class:MyLSD
 get_gradient	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    cv::Mat get_gradient();$/;"	p	language:C++	class:MyLSD
 get_im	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    void get_im(cv_bridge::CvImagePtr& cv_ptr);$/;"	p	language:C++	class:MyLSD
 get_imdepth	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    void get_imdepth(cv_bridge::CvImagePtr& cv_ptr_depth);$/;"	p	language:C++	class:MyLSD

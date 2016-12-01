@@ -28,7 +28,6 @@ class MyLSD
         unsigned int im_width;
         unsigned int im_height;
         
-        double cx_, cy_, fx_, fy_;
 
     public:
     
@@ -39,10 +38,6 @@ class MyLSD
         im_j = new cv::Mat(im_height, im_width, CV_64F, 0.0);
         key_frame = new cv::Mat(im_height, im_width, CV_64F, 0.0);
         key_depth = new cv::Mat(im_height, im_width, CV_64F, 0.0);
-    
-        cx_ = 317.20617294311523;
-        cy_ = 233.2914752960205;
-        fx_ = fy_ = 307.4838344732113;
     }
 
     ~MyLSD(){}

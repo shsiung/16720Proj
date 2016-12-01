@@ -1,41 +1,40 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
-baseline	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    double baseline = 0.0;$/;"	m	language:C++	class:Camera	file:
-Camera	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^        Camera(): it_(nh_)$/;"	f	language:C++	class:Camera
-Camera	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^class Camera$/;"	c	language:C++	file:
-cam_info_sub_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    ros::Subscriber cam_info_sub_;          $/;"	m	language:C++	class:Camera	file:
+baseline	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    double baseline = 0.0;$/;"	m	language:C++	class:Camera	file:
+Camera	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^        Camera(): it_(nh_)$/;"	f	language:C++	class:Camera
+Camera	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^class Camera$/;"	c	language:C++	file:
+cam_info_sub_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    ros::Subscriber cam_info_sub_;          $/;"	m	language:C++	class:Camera	file:
 compute_jacob	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::compute_jacob()$/;"	f	language:C++	class:MyLSD
-cv_ptr	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    cv_bridge::CvImagePtr cv_ptr;$/;"	m	language:C++	class:Camera	file:
-cv_ptr_depth	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    cv_bridge::CvImagePtr cv_ptr_depth;$/;"	m	language:C++	class:Camera	file:
-cx_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    double cx_, cy_, fx_, fy_;$/;"	m	language:C++	class:Camera	file:
-cy_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    double cx_, cy_, fx_, fy_;$/;"	m	language:C++	class:Camera	file:
+cv_ptr	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    cv_bridge::CvImagePtr cv_ptr;$/;"	m	language:C++	class:Camera	file:
+cv_ptr_depth	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    cv_bridge::CvImagePtr cv_ptr_depth;$/;"	m	language:C++	class:Camera	file:
+cx_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    double cx_, cy_, fx_, fy_;$/;"	m	language:C++	class:Camera	file:
+cy_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    double cx_, cy_, fx_, fy_;$/;"	m	language:C++	class:Camera	file:
 delta_R	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^Eigen::Vector3d MyLSD::delta_R(const Matrix_3X3 &R)$/;"	f	language:C++	class:MyLSD
-depth	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    cv::Mat depth;$/;"	m	language:C++	class:Camera	file:
-depthToCV8UC1	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^        void depthToCV8UC1(const cv::Mat& float_img, cv::Mat& mono8_img){$/;"	f	language:C++	class:Camera
-disparityImageCallback	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^void disparityImageCallback(const stereo_msgs::DisparityImage& msg)$/;"	f	language:C++
-dispCb	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^        void dispCb(const stereo_msgs::DisparityImage& msg)$/;"	f	language:C++	class:Camera
-fx_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    double cx_, cy_, fx_, fy_;$/;"	m	language:C++	class:Camera	file:
-fy_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    double cx_, cy_, fx_, fy_;$/;"	m	language:C++	class:Camera	file:
-getCamInfo	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^        void getCamInfo(const sensor_msgs::CameraInfo::ConstPtr& msg_info)$/;"	f	language:C++	class:Camera
+depth	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    cv::Mat depth;$/;"	m	language:C++	class:Camera	file:
+depthToCV8UC1	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^        void depthToCV8UC1(const cv::Mat& float_img, cv::Mat& mono8_img){$/;"	f	language:C++	class:Camera
+depth_sub	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    ros::Subscriber depth_sub;          $/;"	m	language:C++	class:Camera	file:
+dispCb	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^        void dispCb(const stereo_msgs::DisparityImage& msg)$/;"	f	language:C++	class:Camera
+fx_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    double cx_, cy_, fx_, fy_;$/;"	m	language:C++	class:Camera	file:
+fy_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    double cx_, cy_, fx_, fy_;$/;"	m	language:C++	class:Camera	file:
+getCamInfo	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^        void getCamInfo(const sensor_msgs::CameraInfo::ConstPtr& msg_info)$/;"	f	language:C++	class:Camera
 get_gradient	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::get_gradient()$/;"	f	language:C++	class:MyLSD
 get_im	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^void MyLSD::get_im(cv_bridge::CvImagePtr& cv_ptr)$/;"	f	language:C++	class:MyLSD
 get_imdepth	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^void MyLSD::get_imdepth(cv_bridge::CvImagePtr& cv_ptr_depth)$/;"	f	language:C++	class:MyLSD
 gn_update	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::gn_update()$/;"	f	language:C++	class:MyLSD
-got_cam_info	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    bool got_cam_info;$/;"	m	language:C++	class:Camera	file:
-height	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    unsigned int height = 640;$/;"	m	language:C++	class:Camera	file:
-imageCb	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^        void imageCb(const sensor_msgs::ImageConstPtr& msg)$/;"	f	language:C++	class:Camera
-image_pub_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    image_transport::Publisher image_pub_;$/;"	m	language:C++	class:Camera	file:
-image_sub_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    image_transport::Subscriber image_sub_;$/;"	m	language:C++	class:Camera	file:
-it_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    image_transport::ImageTransport it_;$/;"	m	language:C++	class:Camera	file:
-lsd	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    MyLSD lsd;$/;"	m	language:C++	class:Camera	file:
-lsd_alignment	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^        cv::Mat lsd_alignment()$/;"	f	language:C++	class:Camera
+got_cam_info	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    bool got_cam_info = false;$/;"	m	language:C++	class:Camera	file:
+height	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    unsigned int height = 640;$/;"	m	language:C++	class:Camera	file:
+imageCb	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^        void imageCb(const sensor_msgs::ImageConstPtr& msg)$/;"	f	language:C++	class:Camera
+image_pub_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    image_transport::Publisher image_pub_;$/;"	m	language:C++	class:Camera	file:
+image_sub_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    image_transport::Subscriber image_sub_;$/;"	m	language:C++	class:Camera	file:
+it_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    image_transport::ImageTransport it_;$/;"	m	language:C++	class:Camera	file:
+lsd	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    MyLSD lsd;$/;"	m	language:C++	class:Camera	file:
+lsd_alignment	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^        cv::Mat lsd_alignment()$/;"	f	language:C++	class:Camera
 main	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^int main(int argc, char** argv)$/;"	f	language:C++
-model_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    image_geometry::PinholeCameraModel model_;$/;"	m	language:C++	class:Camera	file:
-mono8_depth	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    cv::Mat mono8_depth;$/;"	m	language:C++	class:Camera	file:
-nh_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    ros::NodeHandle nh_;$/;"	m	language:C++	class:Camera	file:
-OPENCV_WINDOW	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    const std::string OPENCV_WINDOW = "Image window";$/;"	m	language:C++	class:Camera	file:
+model_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    image_geometry::PinholeCameraModel model_;$/;"	m	language:C++	class:Camera	file:
+mono8_depth	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    cv::Mat mono8_depth;$/;"	m	language:C++	class:Camera	file:
+nh_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    ros::NodeHandle nh_;$/;"	m	language:C++	class:Camera	file:
+OPENCV_WINDOW	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    const std::string OPENCV_WINDOW = "Image window";$/;"	m	language:C++	class:Camera	file:
 SO3_exp	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^Eigen::Quaterniond MyLSD::SO3_exp(const Eigen::Vector3d &v)$/;"	f	language:C++	class:MyLSD
 SO3_log	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^Eigen::Vector3d MyLSD::SO3_log(const Eigen::Quaterniond &q)$/;"	f	language:C++	class:MyLSD
-sub	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    ros::Subscriber sub;          $/;"	m	language:C++	class:Camera	file:
 update_xi	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::update_xi()$/;"	f	language:C++	class:MyLSD
-width	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^    unsigned int width = 512;$/;"	m	language:C++	class:Camera	file:
-~Camera	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^        ~Camera()$/;"	f	language:C++	class:Camera
+width	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    unsigned int width = 512;$/;"	m	language:C++	class:Camera	file:
+~Camera	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^        ~Camera()$/;"	f	language:C++	class:Camera
