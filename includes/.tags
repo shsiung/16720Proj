@@ -14,6 +14,7 @@ get_imj	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignmen
 get_region	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    cv::Mat get_region(cv::Mat& im,double thresh, double scale);$/;"	p	language:C++	class:MyLSD
 gn_update	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    cv::Mat gn_update();$/;"	p	language:C++	class:MyLSD
 gradient	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^        cv::Mat gradient;$/;"	m	language:C++	struct:MyLSD::frame_struct
+I3	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    const Matrix_3X3 I3 = Eigen::MatrixXd::Identity(3,3);$/;"	m	language:C++	class:MyLSD
 id	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^        unsigned int id;$/;"	m	language:C++	struct:MyLSD::frame_struct
 im_height	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    unsigned int im_height;$/;"	m	language:C++	class:MyLSD
 im_i_mat	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    cv::Mat im_i_mat;$/;"	m	language:C++	class:MyLSD
@@ -24,12 +25,16 @@ key_frame	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignm
 key_frame_mat	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    cv::Mat key_frame_mat;$/;"	m	language:C++	class:MyLSD
 LSD	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	5;"	d	language:C++
 mask	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^        cv::Mat mask;$/;"	m	language:C++	struct:MyLSD::frame_struct
-Matrix_3X3	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    typedef Eigen::Matrix<double,  3,  3> Matrix_3X3;   $/;"	t	language:C++	class:MyLSD
-MyLSD	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    MyLSD():$/;"	f	language:C++	class:MyLSD
+Matrix_3X1	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^typedef Eigen::Matrix<double,  3,  1> Matrix_3X1;$/;"	t	language:C++
+Matrix_3X3	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^typedef Eigen::Matrix<double,  3,  3> Matrix_3X3;   $/;"	t	language:C++
+Matrix_4X4	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^typedef Eigen::Matrix<double,  4,  4> Matrix_4X4;$/;"	t	language:C++
+MyLSD	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    MyLSD(): im_width(640), im_height(512), take_keyframe_(true)$/;"	f	language:C++	class:MyLSD
 MyLSD	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^class MyLSD$/;"	c	language:C++
+R	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    Matrix_3X3 R;$/;"	m	language:C++	class:MyLSD
 set_imsize	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    void set_imsize(unsigned int w, unsigned int h)$/;"	f	language:C++	class:MyLSD
 SO3_exp	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    Eigen::Quaterniond SO3_exp(const Eigen::Vector3d &v);$/;"	p	language:C++	class:MyLSD
 SO3_log	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    Eigen::Vector3d SO3_log(const Eigen::Quaterniond &v);$/;"	p	language:C++	class:MyLSD
+T	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    Matrix_3X1 T;$/;"	m	language:C++	class:MyLSD
 take_keyframe_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    bool take_keyframe_;$/;"	m	language:C++	class:MyLSD
 type2str	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    string type2str(int type);$/;"	p	language:C++	class:MyLSD
 update_xi	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    cv::Mat update_xi();$/;"	p	language:C++	class:MyLSD

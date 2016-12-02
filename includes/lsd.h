@@ -14,10 +14,12 @@
 
 using namespace std;
 
+typedef Eigen::Matrix<double,  3,  3> Matrix_3X3;   
+typedef Eigen::Matrix<double,  3,  1> Matrix_3X1;
+typedef Eigen::Matrix<double,  4,  4> Matrix_4X4;
+
 class MyLSD
 {
-
-    typedef Eigen::Matrix<double,  3,  3> Matrix_3X3;   
 
 private:
     bool take_keyframe_;
@@ -39,15 +41,12 @@ public:
         cv::Mat mask;
     } key_frame, current_frame; 
 
+    const Matrix_3X3 I3 = Eigen::MatrixXd::Identity(3,3);
+    Matrix_3X3 R;
+    Matrix_3X1 T;
   
-    MyLSD():
-        im_width(640), im_height(512), take_keyframe_(true)
-    {
-        //im_i_mat = new cv::Mat(im_height, im_width, CV_64F, 0.0);
-        //im_j_mat = new cv::Mat(im_height, im_width, CV_64F, 0.0);
-        //key_frame_mat = new cv::Mat(im_height, im_width, CV_64F, 0.0);
-        //key_depth_mat = new cv::Mat(im_height, im_width, CV_8UC1, 0.0);
-    }
+    MyLSD(): im_width(640), im_height(512), take_keyframe_(true)
+    {}
 
     ~MyLSD(){}
     void add_frame(cv::Mat& im, unsigned int id);
@@ -57,13 +56,14 @@ public:
 
     cv::Mat get_gradient(cv::Mat& im);
     cv::Mat get_region(cv::Mat& im,double thresh, double scale);
+    
     cv::Mat compute_jacob();
+    cv::Mat warp_im(cv::Mat im_ref, Eigen::Vector4d SE3);
     cv::Mat update_xi();
     cv::Mat gn_update();
     Eigen::Quaterniond SO3_exp(const Eigen::Vector3d &v);
     Eigen::Vector3d SO3_log(const Eigen::Quaterniond &v);
     Eigen::Vector3d delta_R(const Matrix_3X3 &R);
-    cv::Mat warp_im(cv::Mat im_ref, Eigen::Vector4d SE3);
 
     cv::Mat get_depth() {return key_depth_mat;}
     cv::Mat get_imi() {return im_i_mat;}

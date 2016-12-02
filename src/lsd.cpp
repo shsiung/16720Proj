@@ -27,10 +27,9 @@ void MyLSD::add_frame(cv::Mat& im, unsigned int id)
     {
         current_frame.frame = im_j_mat.clone();
         current_frame.gradient = get_gradient(im_j_mat).clone();
-        current_frame.mask = get_region(new_frame.gradient, 125, 1);
+        current_frame.mask = get_region(current_frame.gradient, 125, 1);
         current_frame.id = id;
     }
-
     //cout << "I_size = " << endl << " " << im_temp.rows << "," << im_temp.cols <<endl;
     //    cout << "I = "<< endl << " "  << im_i_mat << endl << endl;
     //    cout << "J_size = " << endl << " " << im_j_mat->rows << "," << im_j->cols <<endl;
