@@ -1,19 +1,19 @@
 
 #include "lsd.h"
 
-void MyLSD::get_im(cv_bridge::CvImagePtr& cv_ptr)
+void MyLSD::get_im(cv::Mat& im, unsigned int id)
 {
     im_i = im_j;
-    *im_j = (cv_ptr->image.clone());
+    *im_j = (im.clone());
     //cout << "I_size = " << endl << " " << im_temp.rows << "," << im_temp.cols <<endl;
     //    cout << "I = "<< endl << " "  << im_i << endl << endl;
     //    cout << "J_size = " << endl << " " << im_j->rows << "," << im_j->cols <<endl;
     //    cout << "J = "<< endl << " "  << im_j << endl << endl;
 }
-void MyLSD::get_imdepth(cv_bridge::CvImagePtr& cv_ptr_depth)
+void MyLSD::get_depth_im(cv::Mat& depth, unsigned int id)
 {
-    *key_depth = (cv_ptr_depth->image.clone());
-     //cout << "depth_size = " << endl << " " << key_depth->rows << "," << key_depth->cols <<endl;
+    *key_depth = depth.clone();
+    // cout << "depth_size = " << endl << " " << key_depth->rows << "," << key_depth->cols <<endl;
     //cout << "depth"<< endl << " "  << *key_depth << endl << endl;
 }
 

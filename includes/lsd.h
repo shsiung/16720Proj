@@ -1,7 +1,6 @@
 /**
  *  Image alignment using LSD's direct photometric error
  */
-
 #ifndef LSD
 #define LSD
 
@@ -41,8 +40,8 @@ class MyLSD
     }
 
     ~MyLSD(){}
-    void get_im(cv_bridge::CvImagePtr& cv_ptr);
-    void get_imdepth(cv_bridge::CvImagePtr& cv_ptr_depth);
+    void get_im(cv::Mat& im, unsigned int id);
+    void get_depth_im(cv::Mat& depth, unsigned int id);
 
     cv::Mat compute_jacob();
     cv::Mat update_xi();
@@ -50,8 +49,10 @@ class MyLSD
     Eigen::Quaterniond SO3_exp(const Eigen::Vector3d &v);
     Eigen::Vector3d SO3_log(const Eigen::Quaterniond &v);
     Eigen::Vector3d delta_R(const Matrix_3X3 &R);
+    cv::Mat warp_im(cv::Mat im_ref, Eigen::Vector4d SE3);
 
     cv::Mat get_gradient();
+    cv::Mat get_depth() {return *key_depth;}
     cv::Mat get_imi() {return *im_i;}
     cv::Mat get_imj() {return *im_j;}
     void set_imsize(unsigned int w, unsigned int h)
