@@ -122,21 +122,17 @@ class Camera
 
         void getDepthCb(const sensor_msgs::PointCloud2ConstPtr& cloud_msg_in)
         {
-            cout << "EHRE\n";
             sensor_msgs::PointCloud2 cloud_msg = *cloud_msg_in;
 
             unsigned int _width=cloud_msg.width;
             unsigned int _height=cloud_msg.height;
-            unsigned int _depth_id = cloud_msg.header.frame_id;
 
             depth_mat = cv::Mat::zeros(_height,_width, CV_16UC1);
 
             uint16_t* pd = (uint16_t*) depth_mat.data;        
-
             int ind = 0;
-                                
             string s1("z");
-            // // this call also resizes the data structure according to the given width, height and fields
+            // this call also resizes the data structure according to the given width, height and fields
             sensor_msgs::PointCloud2Iterator<float>   iter_z(cloud_msg, s1);
             for(; iter_z != iter_z.end(); ++iter_z)
             {
@@ -146,19 +142,18 @@ class Camera
                 // get z
                 float pz = *iter_z;
                 *pd = (uint16_t)(1000.00*pz);
-
                 pd++;
                 ind++;
             }
-            cout << depth_mat.rows << "," << depth_mat.cols << endl;
-            lsd.get_depth_im(depth_mat, _depth_id);
-            cv::imshow( "depth", lsd.get_depth()  ); 
+            //cout << depth_mat.rows << "," << depth_mat.cols << endl;
+            lsd.add_depth(depth_mat, cloud_msg.header.seq);
+            //cv::imshow("5", lsd.get_region());
             cv::waitKey(3);
-
         }
 
         void imageCb(const sensor_msgs::ImageConstPtr& msg)
         {
+            sensor_msgs::Image im_msg = *msg;
             try
             {
                 cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
@@ -170,11 +165,15 @@ class Camera
                 return;
             }
                                   
-            lsd.get_im(cv_ptr->image);
-            cv::Mat result = lsd_alignment();
-            cv::imshow(OPENCV_WINDOW, result);
-            cv::imshow("2", lsd.get_imj());
-            cv::imshow("3", lsd.get_imi());
+            lsd.add_frame(cv_ptr->image, im_msg.header.seq);
+            //cv::imshow(OPENCV_WINDOW, *lsd.current_frame.gradient);
+            if (im_msg.header.seq > 2)
+            {   
+                cv::imshow("Key Frame", lsd.key_frame.frame);
+                cv::imshow( "depth", lsd.key_frame.depth); 
+                cv::imshow( "Interest Region", lsd.current_frame.mask); 
+                cv::imshow("Current Frame", lsd.current_frame.frame);
+            }
             // Update GUI Window
             cv::waitKey(3);
 
@@ -182,9 +181,5 @@ class Camera
             image_pub_.publish(cv_ptr->toImageMsg());
         }
 
-        cv::Mat lsd_alignment()
-        {
-            return lsd.get_gradient();
-        }
 };
 

@@ -1,4 +1,6 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+add_depth	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^void MyLSD::add_depth(cv::Mat& depth, unsigned int id)$/;"	f	language:C++	class:MyLSD
+add_frame	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^void MyLSD::add_frame(cv::Mat& im, unsigned int id)$/;"	f	language:C++	class:MyLSD
 baseline	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    double baseline = 17.5;$/;"	m	language:C++	class:Camera	file:
 Camera	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^        Camera(): it_(nh_)$/;"	f	language:C++	class:Camera
 Camera	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^class Camera$/;"	c	language:C++	file:
@@ -17,9 +19,8 @@ fx_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/sr
 fy_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    double cx_, cy_, fx_, fy_;$/;"	m	language:C++	class:Camera	file:
 getCamInfo	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^        void getCamInfo(const sensor_msgs::CameraInfo::ConstPtr& msg_info)$/;"	f	language:C++	class:Camera
 getDepthCb	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^        void getDepthCb(const sensor_msgs::PointCloud2ConstPtr& cloud_msg_in)$/;"	f	language:C++	class:Camera
-get_depth_im	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^void MyLSD::get_depth_im(cv::Mat& depth, unsigned int id)$/;"	f	language:C++	class:MyLSD
-get_gradient	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::get_gradient()$/;"	f	language:C++	class:MyLSD
-get_im	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^void MyLSD::get_im(cv::Mat& im, unsigned int id)$/;"	f	language:C++	class:MyLSD
+get_gradient	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::get_gradient(cv::Mat& im)$/;"	f	language:C++	class:MyLSD
+get_region	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::get_region(cv::Mat& im,double thresh, double scale)$/;"	f	language:C++	class:MyLSD
 gn_update	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::gn_update()$/;"	f	language:C++	class:MyLSD
 got_cam_info	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    bool got_cam_info = false;$/;"	m	language:C++	class:Camera	file:
 height	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    unsigned int height = 640;$/;"	m	language:C++	class:Camera	file:
@@ -28,7 +29,6 @@ image_pub_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_align
 image_sub_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    image_transport::Subscriber image_sub_;$/;"	m	language:C++	class:Camera	file:
 it_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    image_transport::ImageTransport it_;$/;"	m	language:C++	class:Camera	file:
 lsd	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    MyLSD lsd;$/;"	m	language:C++	class:Camera	file:
-lsd_alignment	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^        cv::Mat lsd_alignment()$/;"	f	language:C++	class:Camera
 main	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/main.cpp	/^int main(int argc, char** argv)$/;"	f	language:C++
 model_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    image_geometry::PinholeCameraModel model_;$/;"	m	language:C++	class:Camera	file:
 mono8_depth	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    cv::Mat mono8_depth;$/;"	m	language:C++	class:Camera	file:
@@ -37,6 +37,7 @@ OPENCV_WINDOW	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_al
 PointCloud	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^typedef pcl::PointCloud<pcl::PointXYZI> PointCloud;$/;"	t	language:C++	file:
 SO3_exp	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^Eigen::Quaterniond MyLSD::SO3_exp(const Eigen::Vector3d &v)$/;"	f	language:C++	class:MyLSD
 SO3_log	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^Eigen::Vector3d MyLSD::SO3_log(const Eigen::Quaterniond &q)$/;"	f	language:C++	class:MyLSD
+type2str	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^string MyLSD::type2str(int type) {$/;"	f	language:C++	class:MyLSD
 update_xi	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::update_xi()$/;"	f	language:C++	class:MyLSD
 width	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    unsigned int width = 512;$/;"	m	language:C++	class:Camera	file:
 ~Camera	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^        ~Camera()$/;"	f	language:C++	class:Camera
