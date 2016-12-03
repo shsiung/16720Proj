@@ -6,9 +6,8 @@ void MyLSD::add_frame(cv::Mat& im, unsigned int id)
     im_i_mat = im_j_mat;
     im_j_mat = (im.clone());
     //ROS_WARN("Current frame id: %d", id);
-    
     //TODO: THIS IS JUST TEMPORARY
-    if (id-key_frame.id >= 20)
+    if (id-key_frame.id >= 10)
     {
         take_keyframe_=true;
     }
@@ -18,34 +17,80 @@ void MyLSD::add_frame(cv::Mat& im, unsigned int id)
         ROS_WARN("Keyframe Im Added! Seq: %d", id);
         key_frame.frame = im_j_mat.clone();
         key_frame.gradient = get_gradient(im_j_mat).clone();
-        key_frame.mask = get_region(key_frame.gradient, 125, 1);
+        key_frame.grad_mask = get_mask(key_frame.gradient, 125, 1, false);
+        key_frame.interest_region = get_region(key_frame);
         key_frame.id = id;
 
         take_keyframe_= false;
+
+        cout << type2str(key_frame.frame.type());
     }
     else
     {
         current_frame.frame = im_j_mat.clone();
         current_frame.gradient = get_gradient(im_j_mat).clone();
-        current_frame.mask = get_region(current_frame.gradient, 125, 1);
+        current_frame.grad_mask = get_mask(current_frame.gradient, 125, 1, false);
         current_frame.id = id;
     }
-    //cout << "I_size = " << endl << " " << im_temp.rows << "," << im_temp.cols <<endl;
-    //    cout << "I = "<< endl << " "  << im_i_mat << endl << endl;
-    //    cout << "J_size = " << endl << " " << im_j_mat->rows << "," << im_j->cols <<endl;
-    //    cout << "J = "<< endl << " "  << im_j_mat << endl << endl;
 }
+
 void MyLSD::add_depth(cv::Mat& depth, unsigned int id)
 {
     key_depth_mat = depth.clone();
     if (id == key_frame.id){
-        ROS_WARN("Keyframe Depth Added! Seq: %d", key_frame.id);
         key_frame.depth = key_depth_mat;
     }
-    // cout << "depth_size = " << endl << " " << key_depth_mat->rows << "," << key_depth->cols <<endl;
-    //cout << "depth"<< endl << " "  << *key_depth_mat << endl << endl;
+    key_frame.interest_depth_region = get_depth_region(key_frame);
 }
 
+
+PointCloud MyLSD::get_key_cloud(cv::Mat& frame)
+{
+    
+    PointCloud cloud;
+    cloud.height = 1;
+    cloud.width =1;
+    cloud.is_dense = false;
+    
+    double pt_counter = 0;
+    pcl::PointXYZI pt;
+    for ( int x = 0; x < frame.rows; x++  )
+    {
+        for ( int y = 0; y < frame.cols ; y++  )
+        {
+            double val = frame.at<double>(y,x);
+            if (val > 0)
+            {
+                pt_counter ++;
+                pt.x = y;
+                pt.y = x;
+                pt.z = frame.at<double>(y,x);
+                pt.intensity = 220;
+                cloud.points.push_back(pt);
+            }
+        }
+    }
+    cloud.width = pt_counter;
+
+    return cloud;
+}
+
+cv::Mat MyLSD::get_region(frame_struct& frame)
+{
+    cv::Mat masked_out;
+    frame.frame.copyTo(masked_out,frame.grad_mask);
+    return masked_out;
+}
+
+cv::Mat MyLSD::get_depth_region(frame_struct& frame)
+{
+    cv::Mat image;
+    cvtColor(frame.depth,image,CV_GRAY2RGB);
+    cv::Mat masked_depth_out;
+    image.copyTo(masked_depth_out,frame.grad_mask);
+
+    return masked_depth_out;
+}
 cv::Mat MyLSD::get_gradient(cv::Mat& im)
 {
     cv::Mat grad_x;
@@ -53,12 +98,15 @@ cv::Mat MyLSD::get_gradient(cv::Mat& im)
     return grad_x;
 }
 
-cv::Mat MyLSD::get_region(cv::Mat& im,double thresh, double scale)
+cv::Mat MyLSD::get_mask(cv::Mat& im,double thresh, double scale, bool inv)
 {
     cv::Mat mask_8;
     cv::Mat out;
     im.convertTo(mask_8, CV_8UC1, scale);
-    cv::threshold(mask_8, out, thresh, 255, CV_THRESH_BINARY);
+    if (inv)
+        cv::threshold(mask_8, out, thresh, 255, CV_THRESH_BINARY_INV);
+    else
+        cv::threshold(mask_8, out, thresh, 255, CV_THRESH_BINARY);
     return out;
 }
 

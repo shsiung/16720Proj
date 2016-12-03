@@ -36,7 +36,7 @@ class Camera
     MyLSD lsd;
     ros::Subscriber depth_sub;          
     ros::Subscriber cam_info_sub_;          
-    ros::Publisher expansion_cloud_pub;
+    ros::Publisher cloud_pub_;
 
     cv::Mat mono8_depth;
     cv::Mat depth;
@@ -56,7 +56,7 @@ class Camera
             depth_sub = nh_.subscribe("/narrow_stereo/points2",1, &Camera::getDepthCb, this);
             cam_info_sub_ = nh_.subscribe("/narrow_stereo/left/camera_info", 1,&Camera::getCamInfo,this);
             
-            expansion_cloud_pub = nh_.advertise<sensor_msgs::PointCloud2>("/output/cloud", 1);
+            cloud_pub_ = nh_.advertise<sensor_msgs::PointCloud2>("/output/cloud", 1);
             image_pub_ = it_.advertise("/image_converter/output_video", 1);
             cv::namedWindow(OPENCV_WINDOW);              
 
@@ -70,35 +70,6 @@ class Camera
         {
             cv::destroyWindow(OPENCV_WINDOW);
         }
-
-        /*void dispCb(const stereo_msgs::DisparityImage::ConstPtr& msg)
-        {
-            try
-                {
-                    cv_ptr_depth = cv_bridge::toCvCopy(msg->image);
-                }
-                catch (cv_bridge::Exception& e)
-                {
-                    ROS_ERROR("cv_bridge exception: %s", e.what());
-                    return;
-                }
-            mono8_depth;
-            depth = cv_ptr_depth->image;
-            depthToCV8UC1(depth,mono8_depth);
-            lsd.get_imdepth(cv_ptr_depth);
-            cv::imshow("4", mono8_depth);
-            //getDepth(msg);
-
-            image_pub_.publish(cv_ptr_depth->toImageMsg());
-         }
-
-        void depthToCV8UC1(const cv::Mat& float_img, cv::Mat& mono8_img){
-              //Process images
-            if(mono8_img.rows != float_img.rows || mono8_img.cols != float_img.cols){
-                    mono8_img = cv::Mat(float_img.size(), CV_8UC1);
-            }
-              cv::convertScaleAbs(float_img, mono8_img, 100, 0.0);
-        }*/
 
         void getCamInfo(const sensor_msgs::CameraInfo::ConstPtr& msg_info)
         {
@@ -141,19 +112,24 @@ class Camera
 
                 // get z
                 float pz = *iter_z;
-                *pd = (uint16_t)(1000.00*pz);
+                if ((uint16_t)(1000*pz) < 30000)
+                    *pd = (uint16_t)(1000*pz);
+                else
+                    *pd = 0;
                 pd++;
                 ind++;
             }
             //cout << depth_mat.rows << "," << depth_mat.cols << endl;
             lsd.add_depth(depth_mat, cloud_msg.header.seq);
-            //cv::imshow("5", lsd.get_region());
             cv::waitKey(3);
         }
 
         void imageCb(const sensor_msgs::ImageConstPtr& msg)
         {
             sensor_msgs::Image im_msg = *msg;
+
+            sensor_msgs::PointCloud2 cloud_PC2;
+            PointCloud cloud; 
             try
             {
                 cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
@@ -166,13 +142,17 @@ class Camera
             }
                                   
             lsd.add_frame(cv_ptr->image, im_msg.header.seq);
-            //cv::imshow(OPENCV_WINDOW, *lsd.current_frame.gradient);
             if (im_msg.header.seq > 2)
             {   
                 cv::imshow("Key Frame", lsd.key_frame.frame);
-                cv::imshow( "depth", lsd.key_frame.depth); 
-                cv::imshow( "Interest Region", lsd.current_frame.mask); 
+                cv::imshow("depth", lsd.key_frame.depth); 
+                cv::imshow("Interest Region", lsd.current_frame.grad_mask); 
                 cv::imshow("Current Frame", lsd.current_frame.frame);
+                cv::imshow("Interest Region with Valid Depth", lsd.key_frame.interest_depth_region);
+                cloud = lsd.key_frame.cloud;
+                cloud.header.frame_id = im_msg.header.frame_id;
+                pcl::toROSMsg(cloud,cloud_PC2);
+                cloud_pub_.publish(cloud_PC2);
             }
             // Update GUI Window
             cv::waitKey(3);

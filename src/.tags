@@ -5,6 +5,7 @@ baseline	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignme
 Camera	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^        Camera(): it_(nh_)$/;"	f	language:C++	class:Camera
 Camera	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^class Camera$/;"	c	language:C++	file:
 cam_info_sub_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    ros::Subscriber cam_info_sub_;          $/;"	m	language:C++	class:Camera	file:
+cloud_pub_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    ros::Publisher cloud_pub_;$/;"	m	language:C++	class:Camera	file:
 compute_jacob	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::compute_jacob()$/;"	f	language:C++	class:MyLSD
 compute_pt_residual	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^double MyLSD::compute_pt_residual(cv::Point& p, Matrix_4X4& xi)$/;"	f	language:C++	class:MyLSD
 cv_ptr	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    cv_bridge::CvImagePtr cv_ptr;$/;"	m	language:C++	class:Camera	file:
@@ -15,13 +16,15 @@ delta_R	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignmen
 depth	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    cv::Mat depth;$/;"	m	language:C++	class:Camera	file:
 depth_mat	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    cv::Mat depth_mat;$/;"	m	language:C++	class:Camera	file:
 depth_sub	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    ros::Subscriber depth_sub;          $/;"	m	language:C++	class:Camera	file:
-expansion_cloud_pub	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    ros::Publisher expansion_cloud_pub;$/;"	m	language:C++	class:Camera	file:
 fx_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    double cx_, cy_, fx_, fy_;$/;"	m	language:C++	class:Camera	file:
 fy_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    double cx_, cy_, fx_, fy_;$/;"	m	language:C++	class:Camera	file:
 getCamInfo	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^        void getCamInfo(const sensor_msgs::CameraInfo::ConstPtr& msg_info)$/;"	f	language:C++	class:Camera
 getDepthCb	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^        void getDepthCb(const sensor_msgs::PointCloud2ConstPtr& cloud_msg_in)$/;"	f	language:C++	class:Camera
+get_depth_region	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::get_depth_region(frame_struct& frame)$/;"	f	language:C++	class:MyLSD
 get_gradient	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::get_gradient(cv::Mat& im)$/;"	f	language:C++	class:MyLSD
-get_region	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::get_region(cv::Mat& im,double thresh, double scale)$/;"	f	language:C++	class:MyLSD
+get_key_cloud	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^PointCloud MyLSD::get_key_cloud(cv::Mat& frame)$/;"	f	language:C++	class:MyLSD
+get_mask	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::get_mask(cv::Mat& im,double thresh, double scale, bool inv)$/;"	f	language:C++	class:MyLSD
+get_region	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::get_region(frame_struct& frame)$/;"	f	language:C++	class:MyLSD
 gn_update	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::gn_update()$/;"	f	language:C++	class:MyLSD
 got_cam_info	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    bool got_cam_info = false;$/;"	m	language:C++	class:Camera	file:
 height	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    unsigned int height = 640;$/;"	m	language:C++	class:Camera	file:
