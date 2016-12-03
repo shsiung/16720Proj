@@ -68,10 +68,33 @@ cv::Mat MyLSD::compute_jacob()
     return grad_x;
 }
 
-cv::Mat MyLSD::update_xi()
+Matrix_4X4 MyLSD::update_xi(Matrix_4X4& delta_xi)
 {
-    cv::Mat grad_x;
-    return grad_x;
+    Matrix_4X4 new_xi;
+    new_xi.block<3,3>(0,0) = current_frame.xi.block<3,3>(0,0) * delta_xi.block<3,3>(0,0);
+    new_xi.block<3,1>(0,3) = current_frame.xi.block<3,3>(0,0) * delta_xi.block<3,1>(0,3) 
+                             + current_frame.xi.block<3,1>(0,3);
+    new_xi(3,3) = 1;
+    return new_xi;
+}
+
+double MyLSD::compute_pt_residual(cv::Point& p, Matrix_4X4& xi)
+{
+    cv::Point warped_p = warp_im(p,xi);
+    return current_frame.frame.at<double>(p.x,p.y) 
+         - key_frame.frame.at<double>(warped_p.x,warped_p.y);
+}
+
+cv::Point MyLSD::warp_im(cv::Point& p, Matrix_4X4& SE3)
+{
+    double depth = key_frame.depth.at<double>(p.x, p.y);
+    Eigen::Vector4d P  (p.x*depth, 
+                        p.y*depth, 
+                            depth, 
+                                1);
+    Eigen::Vector4d warped_3d_pt = SE3 * P;
+    return cv::Point(warped_3d_pt(0)/warped_3d_pt(2),
+                     warped_3d_pt(1)/warped_3d_pt(2));
 }
 
 Eigen::Quaterniond MyLSD::SO3_exp(const Eigen::Vector3d &v)

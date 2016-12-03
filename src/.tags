@@ -6,6 +6,7 @@ Camera	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment
 Camera	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^class Camera$/;"	c	language:C++	file:
 cam_info_sub_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    ros::Subscriber cam_info_sub_;          $/;"	m	language:C++	class:Camera	file:
 compute_jacob	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::compute_jacob()$/;"	f	language:C++	class:MyLSD
+compute_pt_residual	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^double MyLSD::compute_pt_residual(cv::Point& p, Matrix_4X4& xi)$/;"	f	language:C++	class:MyLSD
 cv_ptr	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    cv_bridge::CvImagePtr cv_ptr;$/;"	m	language:C++	class:Camera	file:
 cv_ptr_depth	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    cv_bridge::CvImagePtr cv_ptr_depth;$/;"	m	language:C++	class:Camera	file:
 cx_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    double cx_, cy_, fx_, fy_;$/;"	m	language:C++	class:Camera	file:
@@ -38,6 +39,7 @@ PointCloud	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_align
 SO3_exp	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^Eigen::Quaterniond MyLSD::SO3_exp(const Eigen::Vector3d &v)$/;"	f	language:C++	class:MyLSD
 SO3_log	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^Eigen::Vector3d MyLSD::SO3_log(const Eigen::Quaterniond &q)$/;"	f	language:C++	class:MyLSD
 type2str	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^string MyLSD::type2str(int type) {$/;"	f	language:C++	class:MyLSD
-update_xi	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Mat MyLSD::update_xi()$/;"	f	language:C++	class:MyLSD
+update_xi	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^Matrix_4X4 MyLSD::update_xi(Matrix_4X4& delta_xi)$/;"	f	language:C++	class:MyLSD
+warp_im	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^cv::Point MyLSD::warp_im(cv::Point& p, Matrix_4X4& SE3)$/;"	f	language:C++	class:MyLSD
 width	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    unsigned int width = 512;$/;"	m	language:C++	class:Camera	file:
 ~Camera	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^        ~Camera()$/;"	f	language:C++	class:Camera

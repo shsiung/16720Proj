@@ -39,14 +39,14 @@ public:
         cv::Mat depth;
         cv::Mat gradient;
         cv::Mat mask;
+        Matrix_4X4 xi;
     } key_frame, current_frame; 
 
     const Matrix_3X3 I3 = Eigen::MatrixXd::Identity(3,3);
     Matrix_3X3 R;
     Matrix_3X1 T;
   
-    MyLSD(): im_width(640), im_height(512), take_keyframe_(true)
-    {}
+    MyLSD(): im_width(640), im_height(512), take_keyframe_(true) {}
 
     ~MyLSD(){}
     void add_frame(cv::Mat& im, unsigned int id);
@@ -58,8 +58,9 @@ public:
     cv::Mat get_region(cv::Mat& im,double thresh, double scale);
     
     cv::Mat compute_jacob();
-    cv::Mat warp_im(cv::Mat im_ref, Eigen::Vector4d SE3);
-    cv::Mat update_xi();
+    double compute_pt_residual(cv::Point& p, Matrix_4X4& xi);
+    cv::Point warp_im(cv::Point& p, Matrix_4X4& SE3);
+    Matrix_4X4 update_xi(Matrix_4X4& delta_xi);
     cv::Mat gn_update();
     Eigen::Quaterniond SO3_exp(const Eigen::Vector3d &v);
     Eigen::Vector3d SO3_log(const Eigen::Quaterniond &v);
