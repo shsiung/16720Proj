@@ -43,7 +43,7 @@ class Camera
 
     double baseline = 17.5;
     unsigned int height = 640;
-    unsigned int width = 512;
+    unsigned int width = 480;
     double cx_, cy_, fx_, fy_;
     bool got_cam_info = false;
 

@@ -177,6 +177,45 @@ Eigen::Vector3d MyLSD::SO3_log(const Eigen::Quaterniond &q)
     return omega;
 }
 
+Vector6d MyLSD::SE3_log(const Matrix_4X4 &q)
+{
+    Matrix_3X3 R = q.block<3,3>(0,0);    
+    Matrix_3X1 Vu = q.block<3,1>(0,3);
+    Vector6d xi;
+
+    //double theta = Eigen::acos((R.trace() - 1) / 2.0);
+    //double w = theta / (2 * Eigen::sin(theta)) * (R - R.transpose());
+    //Matrix_3X3 wx = skew(w);
+
+    // double A = Eigen::sin(theta)/theta;
+    // double B = (1 - Eigen::cos(theta))/(theta*theta);
+    // double C = (1-A) / (theta*theta);
+
+    // Matrix_3X3 V = Eigen::Identity(3,3) + B * wx + C * wx * wx;
+
+    // u = V.inv() * Vu;
+    // xi.block<3,1>(0,0) = u;
+    // xi.block<3,1>(3,0) = w; 
+
+    return xi;
+}
+
+Matrix_3X3 MyLSD::skew(const Matrix_3X1 &v)
+{
+  Matrix_3X3 out;
+  out <<     0, -v[2],  v[1],
+          v[2],     0, -v[0],
+         -v[1],  v[0],     0;
+
+  return out;
+}
+
+Matrix_4X4 MyLSD::SE3_exp(const Vector6d &v)
+{
+    Matrix_4X4 a;
+    return a;
+}
+
 Eigen::Vector3d MyLSD::delta_R(const Matrix_3X3 &R)
 {
     Eigen::Vector3d v;

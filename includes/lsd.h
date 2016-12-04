@@ -26,6 +26,8 @@ using namespace std;
 typedef Eigen::Matrix<double,  3,  3> Matrix_3X3;   
 typedef Eigen::Matrix<double,  3,  1> Matrix_3X1;
 typedef Eigen::Matrix<double,  4,  4> Matrix_4X4;
+typedef Eigen::Matrix<double,  6,  1> Vector6d;
+
 
 typedef pcl::PointCloud<pcl::PointXYZI> PointCloud;
 
@@ -83,7 +85,11 @@ public:
     PointCloud get_key_cloud(cv::Mat frame);
 
     Eigen::Quaterniond SO3_exp(const Eigen::Vector3d &v);
-    Eigen::Vector3d SO3_log(const Eigen::Quaterniond &v);
+    Eigen::Vector3d SO3_log(const Eigen::Quaterniond &q);
+    Vector6d SE3_log(const Matrix_4X4 &q);
+    Matrix_4X4 SE3_exp(const Vector6d &v);
+    Matrix_3X3 skew(const Matrix_3X1 &v);
+
     Eigen::Vector3d delta_R(const Matrix_3X3 &R);
 
     cv::Mat get_depth() {return key_depth_mat;}
