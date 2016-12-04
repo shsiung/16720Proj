@@ -34,35 +34,53 @@ void MyLSD::add_frame(cv::Mat& im, unsigned int id)
 
 void MyLSD::add_depth(cv::Mat& depth, PointCloud& orig_cloud, unsigned int id)
 {
+
     key_depth_mat = depth.clone();
     if (id == key_frame.id){
         key_frame.depth = key_depth_mat;
     }
-    key_frame.interest_depth_region = get_depth_region(key_frame);
+    key_frame.interest_depth_region = get_depth_region(key_frame).clone();
+    key_frame.orig_cloud = orig_cloud.makeShared();
+//    ROS_WARN("Orig organized?:    %d", orig_cloud.isOrganized()); 
+//    ROS_WARN("Key frame cloud organized?:    %d", key_frame.orig_cloud->isOrganized()); 
     key_frame.cloud = get_key_cloud(key_frame.frame);
-    key_frame.orig_cloud = orig_cloud;
 }
 
 PointCloud MyLSD::get_key_cloud(cv::Mat frame_in)
 {
     
-    PointCloud cloud;
-    cloud.height = frame_in.rows;
-    cloud.width = frame_in.cols;
-    cloud.is_dense = true;
-    
+    PointCloud cloud = *key_frame.orig_cloud;
+//    ROS_WARN("A copy cloud organized?: %d", cloud.isOrganized()); 
+        
+    double minVal, maxVal;
+    minMaxLoc( key_frame.depth, &minVal, &maxVal  );
+
     double pt_counter = 0;
     pcl::PointXYZI pt;
+
+    cv::Mat mask_8;
+    cv::Mat out;
+    key_frame.interest_depth_region.convertTo(mask_8, CV_8UC1, 255/65536.0);
+    cv::Mat image;
+    cvtColor(mask_8,image,CV_RGB2GRAY);
+
+    int val = 0;
     for ( int x = 0; x < frame_in.rows; x++  )
     {
         for ( int y = 0; y < frame_in.cols ; y++  )
         {
-            double val = key_frame.depth.at<double>(y,x);
-            pt.z = val/1000.0;
-            pt.x = x-256.495846*pt.z*1/566.3;
-            pt.y = y-297.685303*pt.z*1/566.3;
-            pt.intensity = 220;
-            cloud.points.push_back(pt);
+            val = (int)image.at<unsigned char>(y,x);
+            if (val == 0)
+            {
+                cloud.at(y,x).intensity = 0;
+                //pt.intensity = 0;
+                //cloud.points[x*512+y] = pt;
+            }
+            //pt.z = val/1000.0;
+           // pt.x = x-256.495846*pt.z*1/566.3;
+           // pt.y = y-297.685303*pt.z*1/566.3;
+           // pt.intensity = 220;
+           // cloud.points.push_back(pt);
         }
     }
     //ROS_WARN("%d", cloud.width);

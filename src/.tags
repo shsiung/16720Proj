@@ -37,7 +37,6 @@ main	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/s
 model_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    image_geometry::PinholeCameraModel model_;$/;"	m	language:C++	class:Camera	file:
 mono8_depth	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    cv::Mat mono8_depth;$/;"	m	language:C++	class:Camera	file:
 nh_	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    ros::NodeHandle nh_;$/;"	m	language:C++	class:Camera	file:
-OPENCV_WINDOW	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/camera.cpp	/^    const std::string OPENCV_WINDOW = "Image window";$/;"	m	language:C++	class:Camera	file:
 SO3_exp	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^Eigen::Quaterniond MyLSD::SO3_exp(const Eigen::Vector3d &v)$/;"	f	language:C++	class:MyLSD
 SO3_log	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^Eigen::Vector3d MyLSD::SO3_log(const Eigen::Quaterniond &q)$/;"	f	language:C++	class:MyLSD
 type2str	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/src/lsd.cpp	/^string MyLSD::type2str(int type) {$/;"	f	language:C++	class:MyLSD

@@ -31,7 +31,6 @@ class Camera
     image_transport::Publisher image_pub_;
     cv_bridge::CvImagePtr cv_ptr;
     cv_bridge::CvImagePtr cv_ptr_depth;
-    const std::string OPENCV_WINDOW = "Image window";
     MyLSD lsd;
     ros::Subscriber depth_sub;          
     ros::Subscriber cam_info_sub_;          
@@ -57,7 +56,6 @@ class Camera
             
             cloud_pub_ = nh_.advertise<sensor_msgs::PointCloud2>("/output/cloud", 1);
             image_pub_ = it_.advertise("/image_converter/output_video", 1);
-            cv::namedWindow(OPENCV_WINDOW);              
 
             // TODO: FIXME
             cx_ = 317.20617294311523;
@@ -67,7 +65,6 @@ class Camera
 
         ~Camera()
         {
-            cv::destroyWindow(OPENCV_WINDOW);
         }
 
         void getCamInfo(const sensor_msgs::CameraInfo::ConstPtr& msg_info)
@@ -92,13 +89,12 @@ class Camera
 
         void getDepthCb(const sensor_msgs::PointCloud2ConstPtr& cloud_msg_in)
         {
+            //From ROS to PCL cloud
             sensor_msgs::PointCloud2 cloud_msg = *cloud_msg_in;
-
-            pcl::PCLPointCloud2 pcl_pc;
-            pcl_conversions::toPCL(cloud_msg, pcl_pc);
+            cloud_msg.fields[3].name = "intensity";
             PointCloud orig_cloud;
-            pcl::fromPCLPointCloud2(pcl_pc, orig_cloud);
-            ROS_WARN("%d", orig_cloud.size());
+            pcl::fromROSMsg(cloud_msg, orig_cloud);
+            ROS_WARN("Incoming cloud organized?: %d, wid: %d", (orig_cloud).isOrganized(), (orig_cloud).width) ; 
 
             unsigned int _width=cloud_msg.width;
             unsigned int _height=cloud_msg.height;
@@ -146,18 +142,18 @@ class Camera
     //            cv::imshow("Key Frame", lsd.key_frame.frame);
     //            cv::imshow("depth", lsd.key_frame.depth); 
     //            cv::imshow("Interest Region", lsd.current_frame.grad_mask); 
-    //            cv::imshow("Current Frame", lsd.current_frame.frame);
-    //            cv::imshow("Interest Region with Valid Depth", lsd.key_frame.interest_depth_region);
+//                cv::imshow("Current Frame", lsd.key_frame.grad_mask);
+           //     cv::imshow("Interest Region with Valid Depth", lsd.key_frame.interest_depth_region);
                 cloud = lsd.key_frame.cloud;
                 cloud.header.frame_id = im_msg.header.frame_id;
                 //ROS_WARN("%d", cloud.width);
 
 //                ROS_WARN("%d", lsd.current_frame.orig_cloud);
-                pcl::toROSMsg(lsd.key_frame.orig_cloud,cloud_PC2);
+                pcl::toROSMsg(lsd.key_frame.cloud,cloud_PC2);
                 cloud_pub_.publish(cloud_PC2);
             }
             // Update GUI Window
-     //       cv::waitKey(3);
+            cv::waitKey(3);
 
             // Output modified video stream
             image_pub_.publish(cv_ptr->toImageMsg());

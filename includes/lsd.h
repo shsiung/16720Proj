@@ -54,7 +54,7 @@ public:
         cv::Mat interest_depth_region;
         Matrix_4X4 xi;
         PointCloud cloud;
-        PointCloud orig_cloud;
+        PointCloud::Ptr orig_cloud;
     } key_frame, current_frame; 
 
     const Matrix_3X3 I3 = Eigen::MatrixXd::Identity(3,3);

@@ -37,7 +37,7 @@ Matrix_3X3	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_align
 Matrix_4X4	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^typedef Eigen::Matrix<double,  4,  4> Matrix_4X4;$/;"	t	language:C++
 MyLSD	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    MyLSD(): im_width(640), im_height(512), take_keyframe_(true) {}$/;"	f	language:C++	class:MyLSD
 MyLSD	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^class MyLSD$/;"	c	language:C++
-orig_cloud	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^        PointCloud orig_cloud;$/;"	m	language:C++	struct:MyLSD::frame_struct
+orig_cloud	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^        PointCloud::Ptr orig_cloud;$/;"	m	language:C++	struct:MyLSD::frame_struct
 PointCloud	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^typedef pcl::PointCloud<pcl::PointXYZI> PointCloud;$/;"	t	language:C++
 R	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    Matrix_3X3 R;$/;"	m	language:C++	class:MyLSD
 set_imsize	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    void set_imsize(unsigned int w, unsigned int h)$/;"	f	language:C++	class:MyLSD
