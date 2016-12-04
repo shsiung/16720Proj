@@ -92,12 +92,12 @@ public:
     
     cv::Mat compute_jacob();
     double compute_loss(cv::Mat& ref_im, cv::Mat& depth_im, 
-                        cv::Mat& new_im, Vector6d& xi);
+                        cv::Mat& new_im, Vector6d& xi, Matrix_4X4& SE3);
     double compute_pt_residual(cv::Point& p, Matrix_4X4& xi);
     cv::Point warp_im(cv::Point& p, Matrix_4X4& SE3);
     Matrix_4X4 update_xi(Matrix_4X4& delta_xi);
     cv::Mat gn_update();
-    void get_new_pose();
+    void compute_new_pose();
 
     Eigen::Quaterniond SO3_exp(const Eigen::Vector3d &v);
     Eigen::Vector3d SO3_log(const Eigen::Quaterniond &q);

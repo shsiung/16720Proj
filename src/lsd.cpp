@@ -16,7 +16,7 @@ void MyLSD::add_frame(cv::Mat& im, unsigned int id)
         ROS_WARN("Keyframe Im Added! Seq: %d", id);
         key_frame.frame = im_j_mat.clone();
         key_frame.gradient = get_gradient(im_j_mat).clone();
-        key_frame.grad_mask = get_mask(key_frame.gradient, 60, 1, false);
+        key_frame.grad_mask = get_mask(key_frame.gradient, 100, 1, false);
         key_frame.interest_region = get_region(key_frame);
         key_frame.id = id;
 
@@ -26,17 +26,21 @@ void MyLSD::add_frame(cv::Mat& im, unsigned int id)
     {
         current_frame.frame = im_j_mat.clone();
         current_frame.gradient = get_gradient(im_j_mat).clone();
-        current_frame.grad_mask = get_mask(current_frame.gradient, 60, 1, false);
+        current_frame.grad_mask = get_mask(current_frame.gradient, 100, 1, false);
         current_frame.id = id;
     }
-    get_new_pose();
+    compute_new_pose();
 }
 
 
 //Running LSD match to get new pose (alignment)
-void MyLSD::get_new_pose()
+void MyLSD::compute_new_pose()
 {
-    current_pose = current_pose + Eigen::Vector3d(0.01,0,0);
+    if (current_frame.id > 190)
+    {
+        current_pose = current_pose + Eigen::Vector3d(0.01,0,0);
+        current_rpy = current_rpy + Eigen::Vector3d(0.001,0,-0.001);
+    }
 }
 
 void MyLSD::add_depth(cv::Mat& depth, PointCloud& orig_cloud, unsigned int id)
@@ -139,7 +143,7 @@ double MyLSD::compute_pt_residual(cv::Point& p, Matrix_4X4& xi)
 {
     cv::Point warped_p = warp_im(p,xi);
     return current_frame.frame.at<double>(p.y,p.x) 
-         - key_frame.frame.at<double>(warped_p.y,warped_p.x);
+         - key_frame.frame.at<double>(round(warped_p.y),round(warped_p.x));
 }
 
 cv::Point MyLSD::warp_im(cv::Point& p, Matrix_4X4& SE3)
@@ -154,8 +158,21 @@ cv::Point MyLSD::warp_im(cv::Point& p, Matrix_4X4& SE3)
                      warped_3d_pt(1)/warped_3d_pt(2));
 }
 
-double compute_loss(cv::Mat& ref_im, cv::Mat& depth_im, cv::Mat& new_im, Vector6d& xi)
+double MyLSD::compute_loss(cv::Mat& ref_im, cv::Mat& depth_im, cv::Mat& new_im, Vector6d& xi, Matrix_4X4& SE3)
 {
+    unsigned int height = ref_im.rows;
+    unsigned int width = ref_im.cols;
+    cv::Point ref_pt, im_pt;
+    double ref_val, im_val;
+    for (int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            ref_pt = cv::Point(j,i);
+            ref_val = ref_im.at<double>(ref_pt.x,ref_pt.y);
+            im_pt = warp_im(ref_pt, SE3);
+            im_val = new_im.at<double>(im_pt.x, im_pt.y);
+        }
+    }
+
     double a = 0;
     return a;
 }

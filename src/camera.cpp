@@ -4,6 +4,7 @@
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
 #include <cv_bridge/cv_bridge.h>
+#include <string>
 #include <sensor_msgs/image_encodings.h>
 #include <stereo_msgs/DisparityImage.h>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -61,7 +62,7 @@ class Camera
         {
 
 
-            image_sub_ = it_.subscribe("/narrow_stereo/left/image_rect", 1, &Camera::imageCb, this);
+            image_sub_ = it_.subscribe("/narrow_stereo/left/image_rect_color", 1, &Camera::imageCb, this);
             depth_sub = nh_.subscribe("/narrow_stereo/points2",1, &Camera::getDepthCb, this);
             cam_info_sub_ = nh_.subscribe("/narrow_stereo/left/camera_info", 1,&Camera::getCamInfo,this);
             
@@ -194,15 +195,24 @@ class Camera
             if (im_msg.header.seq > 2)
             {   
                 cv::imshow("Key Frame", lsd.key_frame.frame);
-                cv::imshow("Current Frame", lsd.current_frame.frame);
-               //cv::imshow("depth", lsd.key_frame.depth); 
-                cv::imshow("Current Frame Tracking Pixels", lsd.current_frame.grad_mask); 
-                cv::imshow("Key Frame Tracking Pixels", lsd.key_frame.grad_mask);
-               // cv::imshow("Interest Region with Valid Depth", lsd.key_frame.interest_depth_region);
+                cv::imshow("Current Frame", cv_ptr->image);
+                //cv::imshow("depth", lsd.key_frame.depth); 
+                //cv::imshow("Current Frame Tracking Pixels", lsd.current_frame.grad_mask); 
+                //cv::imshow("Key Frame Tracking Pixels", lsd.key_frame.grad_mask);
+                //cv::imshow("Key Frame Tracking Pixels", lsd.key_frame.interest_depth_region);
                 cloud = lsd.key_frame.cloud;
                 cloud.header.frame_id = im_msg.header.frame_id;
                 //ROS_WARN("%d", cloud.width);
-
+               /* if (im_msg.header.seq > 200 && im_msg.header.seq % 10 == 0)
+                {
+                    string frame_title = "../frame_" + boost::lexical_cast<std::string>(im_msg.header.seq)+".jpg";
+                    string track_title = "../tracking_" + boost::lexical_cast<std::string>(im_msg.header.seq)+".jpg";
+                    string grad_tittle = "../grad_" + boost::lexical_cast<std::string>(im_msg.header.seq)+".jpg";
+                    cv::imwrite( frame_title, lsd.key_frame.frame);
+                    cv::imwrite( grad_tittle, lsd.key_frame.grad_mask);
+                    cout <<frame_title;
+                    cv::imwrite( track_title, lsd.key_frame.interest_depth_region);
+                }*/
 //                ROS_WARN("%d", lsd.current_frame.orig_cloud);
                 pcl::toROSMsg(cloud,cloud_PC2);
                 cloud_pub_.publish(cloud_PC2);
