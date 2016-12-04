@@ -20,6 +20,12 @@
 #include <pcl/PCLPointCloud2.h>
 #include <pcl/conversions.h>
 #include <pcl_ros/transforms.h>
+#include <tf/transform_broadcaster.h>
+#include <tf/transform_listener.h>
+#include <tf/transform_datatypes.h>
+#include <nav_msgs/Odometry.h>
+#include <ros/console.h>
+#include <geometry_msgs/Pose.h>
 
 using namespace std;
 
@@ -35,6 +41,9 @@ class Camera
     ros::Subscriber depth_sub;          
     ros::Subscriber cam_info_sub_;          
     ros::Publisher cloud_pub_;
+    ros::Publisher state_pub;
+
+    tf::TransformBroadcaster state_broadcaster;
 
     cv::Mat mono8_depth;
     cv::Mat depth;
@@ -50,12 +59,15 @@ class Camera
     public:
         Camera(): it_(nh_)
         {
+
+
             image_sub_ = it_.subscribe("/narrow_stereo/left/image_rect", 1, &Camera::imageCb, this);
             depth_sub = nh_.subscribe("/narrow_stereo/points2",1, &Camera::getDepthCb, this);
             cam_info_sub_ = nh_.subscribe("/narrow_stereo/left/camera_info", 1,&Camera::getCamInfo,this);
             
             cloud_pub_ = nh_.advertise<sensor_msgs::PointCloud2>("/output/cloud", 1);
             image_pub_ = it_.advertise("/image_converter/output_video", 1);
+            state_pub = nh_.advertise<nav_msgs::Odometry>("state", 50);
 
             // TODO: FIXME
             cx_ = 317.20617294311523;
@@ -66,6 +78,49 @@ class Camera
         ~Camera()
         {
         }
+
+        void publishState(ros::Publisher& state_pub, tf::TransformBroadcaster& state_broadcaster)
+        {
+
+          // Set a tf quaternion first, and then convert to ROS geometry quaternion message
+          ros::Time current_time = ros::Time::now(); 
+          tf::Quaternion quat;
+          geometry_msgs::Quaternion state_quat;
+          quat.setRPY(lsd.current_rpy(0), lsd.current_rpy(1), lsd.current_rpy(2));
+          tf::quaternionTFToMsg(quat, state_quat);  
+            
+          //first, we'll publish the transform over tf tree
+          geometry_msgs::TransformStamped state_trans;
+          state_trans.header.stamp = current_time;
+          state_trans.header.frame_id = "world";
+          state_trans.child_frame_id = "odom";
+
+          state_trans.transform.translation.x = lsd.current_pose(0);
+          state_trans.transform.translation.y = lsd.current_pose(1);
+          state_trans.transform.translation.z = lsd.current_pose(2);
+          state_trans.transform.rotation = state_quat;
+
+          //send the transform
+          state_broadcaster.sendTransform(state_trans);
+
+          //next, we'll publish the state tree (using an odometry message) over ROS
+          nav_msgs::Odometry state;
+          state.header.stamp = current_time;
+          state.header.frame_id = "world";
+
+          //set the position
+          state.pose.pose.position.x = lsd.current_pose(0);
+          state.pose.pose.position.y = lsd.current_pose(1);
+          state.pose.pose.position.z = lsd.current_pose(2);
+          state.pose.pose.orientation = state_quat;
+
+          //set the velocity
+          state.child_frame_id = "odom";
+
+          //publish the message
+          state_pub.publish(state); 
+        }
+
 
         void getCamInfo(const sensor_msgs::CameraInfo::ConstPtr& msg_info)
         {
@@ -138,12 +193,12 @@ class Camera
             lsd.add_frame(cv_ptr->image, im_msg.header.seq);
             if (im_msg.header.seq > 2)
             {   
-    //            cv::imshow("Key Frame", lsd.key_frame.frame);
-    //            cv::imshow("depth", lsd.key_frame.depth); 
-    //            cv::imshow("Interest Region", lsd.current_frame.grad_mask); 
-//                cv::imshow("Current Frame", lsd.key_frame.grad_mask);
-                cv::imshow("Interest Region with Valid Depth", lsd.key_frame.interest_depth_region);
-                cloud.clear();
+                cv::imshow("Key Frame", lsd.key_frame.frame);
+                cv::imshow("Current Frame", lsd.current_frame.frame);
+               //cv::imshow("depth", lsd.key_frame.depth); 
+                cv::imshow("Current Frame Tracking Pixels", lsd.current_frame.grad_mask); 
+                cv::imshow("Key Frame Tracking Pixels", lsd.key_frame.grad_mask);
+               // cv::imshow("Interest Region with Valid Depth", lsd.key_frame.interest_depth_region);
                 cloud = lsd.key_frame.cloud;
                 cloud.header.frame_id = im_msg.header.frame_id;
                 //ROS_WARN("%d", cloud.width);
@@ -157,6 +212,8 @@ class Camera
 
             // Output modified video stream
             image_pub_.publish(cv_ptr->toImageMsg());
+            publishState(state_pub, state_broadcaster); //Publish current state using an odometry msg
+
         }
 
 };

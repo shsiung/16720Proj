@@ -29,6 +29,14 @@ void MyLSD::add_frame(cv::Mat& im, unsigned int id)
         current_frame.grad_mask = get_mask(current_frame.gradient, 60, 1, false);
         current_frame.id = id;
     }
+    get_new_pose();
+}
+
+
+//Running LSD match to get new pose (alignment)
+void MyLSD::get_new_pose()
+{
+    current_pose = current_pose + Eigen::Vector3d(0.01,0,0);
 }
 
 void MyLSD::add_depth(cv::Mat& depth, PointCloud& orig_cloud, unsigned int id)
@@ -146,6 +154,12 @@ cv::Point MyLSD::warp_im(cv::Point& p, Matrix_4X4& SE3)
                      warped_3d_pt(1)/warped_3d_pt(2));
 }
 
+double compute_loss(cv::Mat& ref_im, cv::Mat& depth_im, cv::Mat& new_im, Vector6d& xi)
+{
+    double a = 0;
+    return a;
+}
+
 Eigen::Quaterniond MyLSD::SO3_exp(const Eigen::Vector3d &v)
 {
     Eigen::Quaterniond q;
@@ -179,25 +193,62 @@ Eigen::Vector3d MyLSD::SO3_log(const Eigen::Quaterniond &q)
 
 Vector6d MyLSD::SE3_log(const Matrix_4X4 &q)
 {
-    Matrix_3X3 R = q.block<3,3>(0,0);    
-    Matrix_3X1 Vu = q.block<3,1>(0,3);
-    Vector6d xi;
+    Matrix_3X3  R = q.block<3,3>(0,0);    
+    Matrix_3X1  Vu = q.block<3,1>(0,3);
+    Vector6d    xi;
+    double      theta = acos((R.trace() - 1) / 2.0);
+    Matrix_3X1  w = (theta / (2 * sin(theta)) * (R - R.transpose())).diagonal();
+    Matrix_3X3  wx = skew(w);
 
-    //double theta = Eigen::acos((R.trace() - 1) / 2.0);
-    //double w = theta / (2 * Eigen::sin(theta)) * (R - R.transpose());
-    //Matrix_3X3 wx = skew(w);
+    double      A = sin(theta)/theta; 
+    double      B = (1 - cos(theta))/(theta*theta);
+    double      C = (1-A) / (theta*theta);
 
-    // double A = Eigen::sin(theta)/theta;
-    // double B = (1 - Eigen::cos(theta))/(theta*theta);
-    // double C = (1-A) / (theta*theta);
+    Matrix_3X3 V = Eigen::MatrixXd::Identity(3,3) + B * wx + C * wx * wx;
 
-    // Matrix_3X3 V = Eigen::Identity(3,3) + B * wx + C * wx * wx;
-
-    // u = V.inv() * Vu;
-    // xi.block<3,1>(0,0) = u;
-    // xi.block<3,1>(3,0) = w; 
+    Matrix_3X1 u = V.inverse() * Vu;
+    xi.block<3,1>(0,0) = u;
+    xi.block<3,1>(3,0) = w; 
 
     return xi;
+}
+
+Matrix_4X4 MyLSD::SE3_exp(const Vector6d &v)
+{
+    Matrix_4X4 T;
+    double x = v(0);
+    double y = v(1);
+    double z = v(3);
+    double w1 = v(4);
+    double w2 = v(5);
+    double w3 = v(6);
+    Matrix_3X1 u = Eigen::Vector3d(x,y,z);
+    Matrix_3X1 w = Eigen::Vector3d(w1,w2,w3);
+    Matrix_3X3 wx = skew(w);
+    Matrix_3X3 wx2 = wx*wx;
+    double theta = sqrt(w1*w1 + w2*w2 + w3*w3);
+    if (abs(theta) > 1e-20)
+    {
+        double      A = sin(theta)/theta; 
+        double      B = (1 - cos(theta))/(theta*theta);
+        double      C = (1-A) / (theta*theta);
+        Matrix_3X3 R = Eigen::MatrixXd::Identity(3,3) + A * wx + C*wx2;
+        Matrix_3X3 V = Eigen::MatrixXd::Identity(3,3) + B * wx + C*wx2;
+        T.block<3,3>(0,0) = R;
+        T.block<3,1>(0,3) = V*u;
+        T.block<1,3>(3,0) = Eigen::Matrix<double,  1,  3>(0,0,0);
+        T(3,3) = 1;
+    }
+    else
+    {
+        T.block<3,1>(0,0) = Eigen::Vector3d::Zero();
+        T.block<3,1>(0,1) = Eigen::Vector3d::Zero();
+        T.block<3,1>(0,2) = Eigen::Vector3d::Zero();
+        T.block<3,1>(0,3) = u;
+        T.block<1,3>(3,0) = Eigen::Matrix<double,  1,  3>(0,0,0);
+        T(3,3) = 1;
+    }
+    return T;
 }
 
 Matrix_3X3 MyLSD::skew(const Matrix_3X1 &v)
@@ -208,12 +259,6 @@ Matrix_3X3 MyLSD::skew(const Matrix_3X1 &v)
          -v[1],  v[0],     0;
 
   return out;
-}
-
-Matrix_4X4 MyLSD::SE3_exp(const Vector6d &v)
-{
-    Matrix_4X4 a;
-    return a;
 }
 
 Eigen::Vector3d MyLSD::delta_R(const Matrix_3X3 &R)
