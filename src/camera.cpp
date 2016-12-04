@@ -16,13 +16,12 @@
 #include <sensor_msgs/PointCloud.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/point_cloud2_iterator.h>
-#include <pcl_conversions/pcl_conversions.h>
 #include <pcl/point_cloud.h>
-
+#include <pcl/PCLPointCloud2.h>
+#include <pcl/conversions.h>
+#include <pcl_ros/transforms.h>
 
 using namespace std;
-
-typedef pcl::PointCloud<pcl::PointXYZI> PointCloud;
 
 class Camera
 {
@@ -95,6 +94,12 @@ class Camera
         {
             sensor_msgs::PointCloud2 cloud_msg = *cloud_msg_in;
 
+            pcl::PCLPointCloud2 pcl_pc;
+            pcl_conversions::toPCL(cloud_msg, pcl_pc);
+            PointCloud orig_cloud;
+            pcl::fromPCLPointCloud2(pcl_pc, orig_cloud);
+            ROS_WARN("%d", orig_cloud.size());
+
             unsigned int _width=cloud_msg.width;
             unsigned int _height=cloud_msg.height;
 
@@ -107,9 +112,6 @@ class Camera
             sensor_msgs::PointCloud2Iterator<float>   iter_z(cloud_msg, s1);
             for(; iter_z != iter_z.end(); ++iter_z)
             {
-                int u = ind/_width;
-                int v = ind%_width;
-
                 // get z
                 float pz = *iter_z;
                 if ((uint16_t)(1000*pz) < 30000)
@@ -119,15 +121,12 @@ class Camera
                 pd++;
                 ind++;
             }
-            //cout << depth_mat.rows << "," << depth_mat.cols << endl;
-            lsd.add_depth(depth_mat, cloud_msg.header.seq);
-            cv::waitKey(3);
+            lsd.add_depth(depth_mat, orig_cloud, cloud_msg.header.seq);
         }
 
         void imageCb(const sensor_msgs::ImageConstPtr& msg)
         {
             sensor_msgs::Image im_msg = *msg;
-
             sensor_msgs::PointCloud2 cloud_PC2;
             PointCloud cloud; 
             try
@@ -144,18 +143,21 @@ class Camera
             lsd.add_frame(cv_ptr->image, im_msg.header.seq);
             if (im_msg.header.seq > 2)
             {   
-                cv::imshow("Key Frame", lsd.key_frame.frame);
-                cv::imshow("depth", lsd.key_frame.depth); 
-                cv::imshow("Interest Region", lsd.current_frame.grad_mask); 
-                cv::imshow("Current Frame", lsd.current_frame.frame);
-                cv::imshow("Interest Region with Valid Depth", lsd.key_frame.interest_depth_region);
+    //            cv::imshow("Key Frame", lsd.key_frame.frame);
+    //            cv::imshow("depth", lsd.key_frame.depth); 
+    //            cv::imshow("Interest Region", lsd.current_frame.grad_mask); 
+    //            cv::imshow("Current Frame", lsd.current_frame.frame);
+    //            cv::imshow("Interest Region with Valid Depth", lsd.key_frame.interest_depth_region);
                 cloud = lsd.key_frame.cloud;
                 cloud.header.frame_id = im_msg.header.frame_id;
-                pcl::toROSMsg(cloud,cloud_PC2);
+                //ROS_WARN("%d", cloud.width);
+
+//                ROS_WARN("%d", lsd.current_frame.orig_cloud);
+                pcl::toROSMsg(lsd.key_frame.orig_cloud,cloud_PC2);
                 cloud_pub_.publish(cloud_PC2);
             }
             // Update GUI Window
-            cv::waitKey(3);
+     //       cv::waitKey(3);
 
             // Output modified video stream
             image_pub_.publish(cv_ptr->toImageMsg());

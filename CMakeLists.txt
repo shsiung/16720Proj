@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   nav_msgs
   tf
+  PCL REQUIRED COMPONENTS
 )
 
 INCLUDE_DIRECTORIES("/usr/include/eigen3")
@@ -48,6 +49,7 @@ catkin_package(
 #  LIBRARIES lsd_alignment_ros
 #  CATKIN_DEPENDS roscpp rospy std_msgs
 #  DEPENDS Eigen
+    DEPENDS PCL
 )
 
 ###########

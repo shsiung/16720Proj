@@ -1,5 +1,5 @@
 !_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
-add_depth	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    void add_depth(cv::Mat& depth, unsigned int id);$/;"	p	language:C++	class:MyLSD
+add_depth	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    void add_depth(cv::Mat& depth, PointCloud& orig_cloud, unsigned int id);$/;"	p	language:C++	class:MyLSD
 add_frame	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    void add_frame(cv::Mat& im, unsigned int id);$/;"	p	language:C++	class:MyLSD
 cloud	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^        PointCloud cloud;$/;"	m	language:C++	struct:MyLSD::frame_struct
 compute_jacob	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    cv::Mat compute_jacob();$/;"	p	language:C++	class:MyLSD
@@ -14,7 +14,7 @@ get_depth_region	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd
 get_gradient	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    cv::Mat get_gradient(cv::Mat& im);$/;"	p	language:C++	class:MyLSD
 get_imi	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    cv::Mat get_imi() {return im_i_mat;}$/;"	f	language:C++	class:MyLSD
 get_imj	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    cv::Mat get_imj() {return im_j_mat;}$/;"	f	language:C++	class:MyLSD
-get_key_cloud	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    PointCloud get_key_cloud(cv::Mat& frame);$/;"	p	language:C++	class:MyLSD
+get_key_cloud	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    PointCloud get_key_cloud(cv::Mat frame);$/;"	p	language:C++	class:MyLSD
 get_mask	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    cv::Mat get_mask(cv::Mat& im,double thresh, double scale, bool inv);$/;"	p	language:C++	class:MyLSD
 get_region	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    cv::Mat get_region(frame_struct& frame);$/;"	p	language:C++	class:MyLSD
 gn_update	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    cv::Mat gn_update();$/;"	p	language:C++	class:MyLSD
@@ -37,6 +37,7 @@ Matrix_3X3	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_align
 Matrix_4X4	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^typedef Eigen::Matrix<double,  4,  4> Matrix_4X4;$/;"	t	language:C++
 MyLSD	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    MyLSD(): im_width(640), im_height(512), take_keyframe_(true) {}$/;"	f	language:C++	class:MyLSD
 MyLSD	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^class MyLSD$/;"	c	language:C++
+orig_cloud	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^        PointCloud orig_cloud;$/;"	m	language:C++	struct:MyLSD::frame_struct
 PointCloud	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^typedef pcl::PointCloud<pcl::PointXYZI> PointCloud;$/;"	t	language:C++
 R	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    Matrix_3X3 R;$/;"	m	language:C++	class:MyLSD
 set_imsize	/home/shsiung/Desktop/Jerry_Workspace/ros_lsd_alignment/src/lsd_alignment/includes/lsd.h	/^    void set_imsize(unsigned int w, unsigned int h)$/;"	f	language:C++	class:MyLSD

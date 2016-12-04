@@ -22,8 +22,6 @@ void MyLSD::add_frame(cv::Mat& im, unsigned int id)
         key_frame.id = id;
 
         take_keyframe_= false;
-
-        cout << type2str(key_frame.frame.type());
     }
     else
     {
@@ -34,44 +32,40 @@ void MyLSD::add_frame(cv::Mat& im, unsigned int id)
     }
 }
 
-void MyLSD::add_depth(cv::Mat& depth, unsigned int id)
+void MyLSD::add_depth(cv::Mat& depth, PointCloud& orig_cloud, unsigned int id)
 {
     key_depth_mat = depth.clone();
     if (id == key_frame.id){
         key_frame.depth = key_depth_mat;
     }
     key_frame.interest_depth_region = get_depth_region(key_frame);
+    key_frame.cloud = get_key_cloud(key_frame.frame);
+    key_frame.orig_cloud = orig_cloud;
 }
 
-
-PointCloud MyLSD::get_key_cloud(cv::Mat& frame)
+PointCloud MyLSD::get_key_cloud(cv::Mat frame_in)
 {
     
     PointCloud cloud;
-    cloud.height = 1;
-    cloud.width =1;
-    cloud.is_dense = false;
+    cloud.height = frame_in.rows;
+    cloud.width = frame_in.cols;
+    cloud.is_dense = true;
     
     double pt_counter = 0;
     pcl::PointXYZI pt;
-    for ( int x = 0; x < frame.rows; x++  )
+    for ( int x = 0; x < frame_in.rows; x++  )
     {
-        for ( int y = 0; y < frame.cols ; y++  )
+        for ( int y = 0; y < frame_in.cols ; y++  )
         {
-            double val = frame.at<double>(y,x);
-            if (val > 0)
-            {
-                pt_counter ++;
-                pt.x = y;
-                pt.y = x;
-                pt.z = frame.at<double>(y,x);
-                pt.intensity = 220;
-                cloud.points.push_back(pt);
-            }
+            double val = key_frame.depth.at<double>(y,x);
+            pt.z = val/1000.0;
+            pt.x = x-256.495846*pt.z*1/566.3;
+            pt.y = y-297.685303*pt.z*1/566.3;
+            pt.intensity = 220;
+            cloud.points.push_back(pt);
         }
     }
-    cloud.width = pt_counter;
-
+    //ROS_WARN("%d", cloud.width);
     return cloud;
 }
 
@@ -121,7 +115,7 @@ Matrix_4X4 MyLSD::update_xi(Matrix_4X4& delta_xi)
     Matrix_4X4 new_xi;
     new_xi.block<3,3>(0,0) = current_frame.xi.block<3,3>(0,0) * delta_xi.block<3,3>(0,0);
     new_xi.block<3,1>(0,3) = current_frame.xi.block<3,3>(0,0) * delta_xi.block<3,1>(0,3) 
-                             + current_frame.xi.block<3,1>(0,3);
+                           + current_frame.xi.block<3,1>(0,3);
     new_xi(3,3) = 1;
     return new_xi;
 }
@@ -129,8 +123,8 @@ Matrix_4X4 MyLSD::update_xi(Matrix_4X4& delta_xi)
 double MyLSD::compute_pt_residual(cv::Point& p, Matrix_4X4& xi)
 {
     cv::Point warped_p = warp_im(p,xi);
-    return current_frame.frame.at<double>(p.x,p.y) 
-         - key_frame.frame.at<double>(warped_p.x,warped_p.y);
+    return current_frame.frame.at<double>(p.y,p.x) 
+         - key_frame.frame.at<double>(warped_p.y,warped_p.x);
 }
 
 cv::Point MyLSD::warp_im(cv::Point& p, Matrix_4X4& SE3)

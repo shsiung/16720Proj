@@ -54,6 +54,7 @@ public:
         cv::Mat interest_depth_region;
         Matrix_4X4 xi;
         PointCloud cloud;
+        PointCloud orig_cloud;
     } key_frame, current_frame; 
 
     const Matrix_3X3 I3 = Eigen::MatrixXd::Identity(3,3);
@@ -64,7 +65,7 @@ public:
 
     ~MyLSD(){}
     void add_frame(cv::Mat& im, unsigned int id);
-    void add_depth(cv::Mat& depth, unsigned int id);
+    void add_depth(cv::Mat& depth, PointCloud& orig_cloud, unsigned int id);
     
     string type2str(int type);
 
@@ -79,7 +80,7 @@ public:
     Matrix_4X4 update_xi(Matrix_4X4& delta_xi);
     cv::Mat gn_update();
 
-    PointCloud get_key_cloud(cv::Mat& frame);
+    PointCloud get_key_cloud(cv::Mat frame);
 
     Eigen::Quaterniond SO3_exp(const Eigen::Vector3d &v);
     Eigen::Vector3d SO3_log(const Eigen::Quaterniond &v);
