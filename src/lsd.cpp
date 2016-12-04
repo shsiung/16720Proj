@@ -5,8 +5,7 @@ void MyLSD::add_frame(cv::Mat& im, unsigned int id)
 {
     im_i_mat = im_j_mat;
     im_j_mat = (im.clone());
-    //ROS_WARN("Current frame id: %d", id);
-    //TODO: THIS IS JUST TEMPORARY
+
     if (id-key_frame.id >= 10)
     {
         take_keyframe_=true;
@@ -17,7 +16,7 @@ void MyLSD::add_frame(cv::Mat& im, unsigned int id)
         ROS_WARN("Keyframe Im Added! Seq: %d", id);
         key_frame.frame = im_j_mat.clone();
         key_frame.gradient = get_gradient(im_j_mat).clone();
-        key_frame.grad_mask = get_mask(key_frame.gradient, 125, 1, false);
+        key_frame.grad_mask = get_mask(key_frame.gradient, 60, 1, false);
         key_frame.interest_region = get_region(key_frame);
         key_frame.id = id;
 
@@ -27,7 +26,7 @@ void MyLSD::add_frame(cv::Mat& im, unsigned int id)
     {
         current_frame.frame = im_j_mat.clone();
         current_frame.gradient = get_gradient(im_j_mat).clone();
-        current_frame.grad_mask = get_mask(current_frame.gradient, 125, 1, false);
+        current_frame.grad_mask = get_mask(current_frame.gradient, 60, 1, false);
         current_frame.id = id;
     }
 }
@@ -38,19 +37,16 @@ void MyLSD::add_depth(cv::Mat& depth, PointCloud& orig_cloud, unsigned int id)
     key_depth_mat = depth.clone();
     if (id == key_frame.id){
         key_frame.depth = key_depth_mat;
+        key_frame.interest_depth_region = get_depth_region(key_frame).clone();
+        key_frame.orig_cloud = orig_cloud.makeShared();
+        key_frame.cloud = get_key_cloud(key_frame.frame);
     }
-    key_frame.interest_depth_region = get_depth_region(key_frame).clone();
-    key_frame.orig_cloud = orig_cloud.makeShared();
-//    ROS_WARN("Orig organized?:    %d", orig_cloud.isOrganized()); 
-//    ROS_WARN("Key frame cloud organized?:    %d", key_frame.orig_cloud->isOrganized()); 
-    key_frame.cloud = get_key_cloud(key_frame.frame);
 }
 
 PointCloud MyLSD::get_key_cloud(cv::Mat frame_in)
 {
     
     PointCloud cloud = *key_frame.orig_cloud;
-//    ROS_WARN("A copy cloud organized?: %d", cloud.isOrganized()); 
         
     double minVal, maxVal;
     minMaxLoc( key_frame.depth, &minVal, &maxVal  );
@@ -69,18 +65,11 @@ PointCloud MyLSD::get_key_cloud(cv::Mat frame_in)
     {
         for ( int y = 0; y < frame_in.cols ; y++  )
         {
-            val = (int)image.at<unsigned char>(y,x);
+            val = (int)image.at<unsigned char>(x,y);
             if (val == 0)
             {
-                cloud.at(y,x).intensity = 0;
-                //pt.intensity = 0;
-                //cloud.points[x*512+y] = pt;
+                cloud.at(y,x).z = -50;
             }
-            //pt.z = val/1000.0;
-           // pt.x = x-256.495846*pt.z*1/566.3;
-           // pt.y = y-297.685303*pt.z*1/566.3;
-           // pt.intensity = 220;
-           // cloud.points.push_back(pt);
         }
     }
     //ROS_WARN("%d", cloud.width);

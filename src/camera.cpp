@@ -94,7 +94,6 @@ class Camera
             cloud_msg.fields[3].name = "intensity";
             PointCloud orig_cloud;
             pcl::fromROSMsg(cloud_msg, orig_cloud);
-            ROS_WARN("Incoming cloud organized?: %d, wid: %d", (orig_cloud).isOrganized(), (orig_cloud).width) ; 
 
             unsigned int _width=cloud_msg.width;
             unsigned int _height=cloud_msg.height;
@@ -111,7 +110,7 @@ class Camera
                 // get z
                 float pz = *iter_z;
                 if ((uint16_t)(1000*pz) < 30000)
-                    *pd = (uint16_t)(1000*pz);
+                    *pd = (uint16_t)(3000*pz);
                 else
                     *pd = 0;
                 pd++;
@@ -143,13 +142,14 @@ class Camera
     //            cv::imshow("depth", lsd.key_frame.depth); 
     //            cv::imshow("Interest Region", lsd.current_frame.grad_mask); 
 //                cv::imshow("Current Frame", lsd.key_frame.grad_mask);
-           //     cv::imshow("Interest Region with Valid Depth", lsd.key_frame.interest_depth_region);
+                cv::imshow("Interest Region with Valid Depth", lsd.key_frame.interest_depth_region);
+                cloud.clear();
                 cloud = lsd.key_frame.cloud;
                 cloud.header.frame_id = im_msg.header.frame_id;
                 //ROS_WARN("%d", cloud.width);
 
 //                ROS_WARN("%d", lsd.current_frame.orig_cloud);
-                pcl::toROSMsg(lsd.key_frame.cloud,cloud_PC2);
+                pcl::toROSMsg(cloud,cloud_PC2);
                 cloud_pub_.publish(cloud_PC2);
             }
             // Update GUI Window
