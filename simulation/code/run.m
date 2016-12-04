@@ -1,6 +1,5 @@
 clear;clc;
-addpath('/Users/daoyuan/Dropbox/cmu/16720/project/rgbd_dataset_freiburg1_xyz/depth');
-addpath('/Users/daoyuan/Dropbox/cmu/16720/project/rgbd_dataset_freiburg1_xyz/rgb');
+addpath('data');
 
 d_ref = '1305031102.160407.png';
 im_ref = '1305031102.175304.png';
@@ -18,4 +17,4 @@ depth_scale = 5000.0;
 
 D_ref = D_ref ./ depth_scale;
 
-[xi, T] = sim(I_ref, D_ref, I, cam_intrinsics)
+[xi, T] = sim(I_ref, D_ref, I, cam_intrinsics);

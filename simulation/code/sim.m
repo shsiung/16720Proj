@@ -1,4 +1,3 @@
-
 function [xi, T] = GaussianNewtonOptimize(I_ref, D_ref, I, cam_intrinsics)
     if ndims(I) == 3
         I_ref = rgb2gray(I_ref);
@@ -49,16 +48,18 @@ function xi = logSE3(T)
 end
 
 function l = loss(I_ref, D_ref, I, xi)
-    [w, h] = size(I);
-    px = repmat( [1:w] - int32(w/2), [h, 1]);
-    py = repmat( [1:h]' - int32(h/2), [1, w]);
+    [h, w] = size(I);
+    [px, py] = meshgrid([1:w],[1:h]);
+    px = px - ones([h, w]) * int32(w/2);
+    py = py - ones([h, w]) * int32(h/2);
+
     p = [ px(:);
           py(:)];
     d = D_ref(1:w*h);
     T = expMapSE3(xi);
     w = warp(p, d, T);
     I_interp = interp2(I, w(1,:), w(2, :));
-    E_xi =  I_ref(p) - I(w);
+    E_xi =  I_ref(p) - I_interp(w);
     l = norm(E_xi);
     l = l*l;
 end
@@ -79,10 +80,14 @@ function jacobian = jacob(I_ref, D_ref, I, xi)
     delta4 = [0, 0, 0, delta_w, 0, 0];
     delta5 = [0, 0, 0, 0, delta_w, 0];
     delta6 = [0, 0, 0, 0, 0, delta_w];
-    delta = [delta1; delta2, delta3; delta4; detla5; delta6];
-   
-    px = repmat( [1:w] - int32(w/2), [h, 1]);
-    py = repmat( [1:h]' - int32(h/2), [1, w]);
+    delta = [delta1; delta2, delta3; delta4; delta5; delta6];
+    
+    
+    [px, py] = meshgrid(1:w,1:h);
+    px = px - ones([h, w]) * int32(w/2);
+    py = py - ones([h, w]) * int32(h/2);
+    px = px(:);
+    py = py(:);
     p = [ px(:);
           py(:)];
     d = D_ref(1:w*h);
@@ -100,9 +105,8 @@ function jacobian = jacob(I_ref, D_ref, I, xi)
         I_plus = interp2(I, w_plus(1,:), w_plus(2, :));
         I_minus= interp2(I, w_minus(1,:),w_minus(2,:));
         
-        E_xi =  I_minus(w_minus) - I(w_plus);
-        jacobian(i) = norm(E_xi);
-        jacobian(i) = jacobian(i)^2;
+        difference =  norm(I_ref(:) - I_plus)^2 - norm(I_ref(:) - I_minus)^2;
+        jacobian(i) = difference ./ sum(delta_xi);
     end
        
 end
